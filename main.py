@@ -1,21 +1,18 @@
-import os
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QLabel, QLineEdit, \
-    QGridLayout, QTabWidget
-from PySide6.QtGui import QFont, QIcon  # 导入 QIcon 类
+from PySide6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QTabWidget, QGroupBox
+from PySide6.QtGui import QFont, QIcon, QPalette, QColor  # 导入 QIcon 类
 
 from components.button_example import ButtonExample
 from components.label_example import LabelExample
 from components.line_edit_example import LineEditExample
-from ui_examples.login_ui import LoginUI
-from ui_examples.settings_ui import SettingsUI
-
-
-# 获取图标绝对路径（确保图标文件存在）
-def resource_path(relative_path):
-    """ 获取资源的绝对路径（兼容打包后的情况）"""
-    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
-    return os.path.join(base_path, relative_path)
+from components.table_example import TableExample
+from components.icon_example import IconExample  # 导入新增的 IconExample 组件
+from components.file_selection_example import FileSelectionExample
+from components.time_selection_example import TimeSelectionExample
+from components.switch_example import SwitchExample
+from components.number_input_example import NumberInputExample
+from components.checkbox_example import CheckboxExample
+from ui_examples.user_form_ui import UserFormUI  # 新增导入
 
 
 class MainWindow(QMainWindow):
@@ -25,7 +22,7 @@ class MainWindow(QMainWindow):
         self.label_example_window = None
         self.button_example_window = None
         self.setWindowTitle("PySide6 示例项目")
-        self.setGeometry(100, 100, 400, 300)
+        self.setGeometry(400, 200, 1000, 600)
 
         # 设置应用程序图标
         self.setWindowIcon(QIcon("app_icon.ico"))  # 确保 icon.png 文件存在
@@ -38,40 +35,50 @@ class MainWindow(QMainWindow):
         central_widget.setLayout(QVBoxLayout())
         central_widget.layout().addWidget(tab_widget)
 
-        # 添加按钮示例标签页
-        button_example_tab = QWidget()
-        tab_widget.addTab(button_example_tab, "按钮示例")
-        button_example_layout = QVBoxLayout(button_example_tab)
-        button_example_widget = ButtonExample()
-        button_example_layout.addWidget(button_example_widget)
+        # 添加仿 form 示例标签页
+        form_example_tab = QWidget()
+        tab_widget.addTab(form_example_tab, "综合示例")
+        form_example_layout = QVBoxLayout(form_example_tab)
 
-        # 添加标签示例标签页
-        label_example_tab = QWidget()
-        tab_widget.addTab(label_example_tab, "标签示例")
-        label_example_layout = QVBoxLayout(label_example_tab)
-        label_example_widget = LabelExample()
-        label_example_layout.addWidget(label_example_widget)
+        # 集成各组件到仿 form 示例页面
+        components = [
+            ("按钮示例", ButtonExample()),
+            ("标签示例", LabelExample()),
+            ("输入框示例", LineEditExample()),
+            ("文件选择示例", FileSelectionExample()),
+            ("时间选择示例", TimeSelectionExample()),
+            ("Switch开关示例", SwitchExample()),
+            ("数字输入框示例", NumberInputExample()),
+            ("Checkbox多选框示例", CheckboxExample())
+        ]
 
-        # 添加输入框示例标签页
-        line_edit_example_tab = QWidget()
-        tab_widget.addTab(line_edit_example_tab, "输入框示例")
-        line_edit_example_layout = QVBoxLayout(line_edit_example_tab)
-        line_edit_example_widget = LineEditExample()
-        line_edit_example_layout.addWidget(line_edit_example_widget)
+        for label, widget in components:
+            group = QGroupBox(label)
+            group_layout = QVBoxLayout()
+            group.setLayout(group_layout)
+            group_layout.addWidget(widget)
+            form_example_layout.addWidget(group)
 
-        # 添加登录界面示例标签页
-        login_ui_tab = QWidget()
-        tab_widget.addTab(login_ui_tab, "登录界面示例")
-        login_ui_layout = QVBoxLayout(login_ui_tab)
-        login_ui_widget = LoginUI()
-        login_ui_layout.addWidget(login_ui_widget)
+        # 添加图标示例标签页
+        icon_example_tab = QWidget()
+        tab_widget.addTab(icon_example_tab, "图标示例")
+        icon_example_layout = QVBoxLayout(icon_example_tab)
+        icon_example_widget = IconExample()
+        icon_example_layout.addWidget(icon_example_widget)
 
-        # 添加设置界面示例标签页
-        settings_ui_tab = QWidget()
-        tab_widget.addTab(settings_ui_tab, "设置界面示例")
-        settings_ui_layout = QVBoxLayout(settings_ui_tab)
-        settings_ui_widget = SettingsUI()
-        settings_ui_layout.addWidget(settings_ui_widget)
+        # 添加表格示例标签页
+        table_example_tab = QWidget()
+        tab_widget.addTab(table_example_tab, "表格示例")
+        table_example_layout = QVBoxLayout(table_example_tab)
+        table_example_widget = TableExample()
+        table_example_layout.addWidget(table_example_widget)
+
+        # 新增用户信息表单标签页
+        user_form_tab = QWidget()
+        tab_widget.addTab(user_form_tab, "用户信息表单")
+        user_form_layout = QVBoxLayout(user_form_tab)
+        user_form_widget = UserFormUI()
+        user_form_layout.addWidget(user_form_widget)
 
     def show_button_example(self):
         from components.button_example import ButtonExample
@@ -88,15 +95,10 @@ class MainWindow(QMainWindow):
         self.line_edit_example_window = LineEditExample()
         self.line_edit_example_window.show()
 
-    def show_login_ui(self):
-        from ui_examples.login_ui import LoginUI
-        self.login_ui_window = LoginUI()
-        self.login_ui_window.show()
-
-    def show_settings_ui(self):
-        from ui_examples.settings_ui import SettingsUI
-        self.settings_ui_window = SettingsUI()
-        self.settings_ui_window.show()
+    def show_table_example(self):
+        from components.table_example import TableExample
+        self.table_example_window = TableExample()
+        self.table_example_window.show()
 
 
 if __name__ == "__main__":
@@ -106,6 +108,17 @@ if __name__ == "__main__":
     if sys.platform == "win32":
         import ctypes
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("heidou.app.1.0.0")
+    # 使用现代风格
+    # app.setStyle("WindowsVista")
+    # 跨平台现代风格
+    app.setStyle("Fusion")
+
+    # 配置调色板（Fusion风格时需要）
+    palette = QPalette()
+    palette.setColor(QPalette.ColorRole.Window, QColor(240, 240, 240))
+    palette.setColor(QPalette.ColorRole.Button, QColor(240, 240, 240))
+    app.setPalette(palette)
+
     window = MainWindow()
     window.show()
     sys.exit(app.exec())
