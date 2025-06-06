@@ -101,6 +101,11 @@ class MainWindow(QMainWindow):
         self.table_example_window.show()
 
 
+def load_stylesheet(file_path):
+    with open(file_path, "r") as f:
+        return f.read()
+
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon("app_icon.ico"))  # 设置全局应用程序图标
@@ -112,6 +117,7 @@ if __name__ == "__main__":
     # app.setStyle("WindowsVista")
     # 跨平台现代风格
     app.setStyle("Fusion")
+    # app.setStyleSheet(load_stylesheet("GTRONICK-qss/NeonButtons.qss"))
 
     # 配置调色板（Fusion风格时需要）
     palette = QPalette()
