@@ -41,7 +41,7 @@ class Hero(QWidget):
         self.action_len = len(self.pixmaps)
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.action)
-        self.timer.start(500)
+        self.timer.start(1000)
 
     def quit(self):
         self.close()
@@ -70,6 +70,6 @@ class Hero(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    hero = Hero(random.choice(['xiaoying', 'L']))
+    hero = Hero(random.choice(['gui']))
     hero.show()
     sys.exit(app.exec())
